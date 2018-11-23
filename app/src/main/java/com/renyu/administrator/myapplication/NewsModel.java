@@ -13,7 +13,7 @@ public class NewsModel {
     NewslistBean bean;
     Reasult result;
     ArrayList<String> datalist = new ArrayList<String>();
-
+    String dataUril="";
 
 
     public NewsModel(NewslistBean bean,Reasult result) {
@@ -26,6 +26,7 @@ public class NewsModel {
         double data = Math.random() * 9;
        if(data>5) {
            datalist.add(String.valueOf(data));
+           datalist.add(dataUril);
          //  bean.setCtime(String.valueOf(data));
            result.onSuccess(datalist);
        }else{

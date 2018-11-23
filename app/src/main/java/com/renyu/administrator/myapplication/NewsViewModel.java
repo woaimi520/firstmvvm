@@ -33,8 +33,8 @@ public class NewsViewModel implements NewsModel.Reasult {
         model = new NewsModel(newslistBean,this);
         activityMainBinding.setNews(newslistBean);//设置初始值
         newslistBean.setCtime("hahah");
-        Button Btn = (Button) activity.findViewById(R.id.button0);
-        Btn.setOnClickListener(new View.OnClickListener() {
+        //Button Btn = (Button) activity.findViewById(R.id.button0);
+        activityMainBinding.button0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(v.getContext(), outter, Toast.LENGTH_SHORT).show();

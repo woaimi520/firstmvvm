@@ -17,8 +17,7 @@ public class NewslistBean extends BaseObservable {
     private String ctime;
     private String title;
     private String description;
-    private String picUrl;
-    private String url;
+    public String picUrl = "http://img0.imgtn.bdimg.com/it/u=2183314203,562241301&fm=26&gp=0.jpg";
 
     public NewslistBean(String ctime, String title, String description) {
 
@@ -55,6 +54,15 @@ public class NewslistBean extends BaseObservable {
         notifyPropertyChanged(BR.description);
     }
 
+    @Bindable
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+        notifyPropertyChanged(BR.picUrl);
+    }
 
 
 
