@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import com.renyu.administrator.myapplication.databinding.ActivityMainBinding;
 
+import yu.com.Aad;
+
 public class MainActivity extends AppCompatActivity {
     private NewsViewModel newsViewModel;
     @Override
@@ -16,6 +18,6 @@ public class MainActivity extends AppCompatActivity {
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         newsViewModel = new NewsViewModel(this, binding);
-        ;
+        Aad aad = new Aad();
     }
 }
