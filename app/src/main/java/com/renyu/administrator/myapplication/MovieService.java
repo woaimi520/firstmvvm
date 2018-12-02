@@ -10,8 +10,10 @@ import retrofit.http.Query;
 
 public interface MovieService {
 
-        //获取豆瓣Top250 榜单
-        @GET("top250")
-        Call<MovieSubject> getTop250(@Query("start") int start, @Query("count")int count);
 
+        @GET("index")
+        //index会拼接到BASE_URL中，此时这个URL已经拼接完毕
+        Call<WeatherResp> cityNameQueryWeather(@Query("key") String key,
+                                               @Query("cityname") String cityname,
+                                               @Query("format") int format);
 }

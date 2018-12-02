@@ -2,9 +2,9 @@ package com.renyu.administrator.myapplication;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -13,9 +13,7 @@ import retrofit.Response;
 import retrofit.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
-
-import static android.content.ContentValues.TAG;
+import rx.schedulers.Schedulers;
 
 /**
  * 新闻网络请求model
@@ -28,12 +26,15 @@ public class NewsModel {
     ArrayList<String> datalist = new ArrayList<String>();
     String dataUril="";
     final static String TAG = "NewsModel";
-    final static String BASE_URL = "https://api.douban.con/v2/movie/";
+    final static String BASE_URL = "http://v.juhe.cn/weather/";
+    private static Gson gson = new Gson();
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build();
     MovieService mApi = retrofit.create(MovieService.class);
+
+    private static final String KEY = "------------------------";
 
     public NewsModel(NewslistBean bean,Reasult result) {
         this.bean = bean;
@@ -49,12 +50,13 @@ public class NewsModel {
             public void call(Subscriber<? super Integer> subscriber) {
                 subscriber.onNext(9);//这里可以添加网络访问
                 //调用方法得到一个Call
-                Call<MovieSubject> call = mApi.getTop250(0, 20);
-                call.enqueue(new Callback<MovieSubject>() {
+                Call<WeatherResp> call = mApi.cityNameQueryWeather(KEY, "武汉",1);
+                call.enqueue(new Callback<WeatherResp>() {
                     @Override
-                    public void onResponse(Response<MovieSubject> response, Retrofit retrofit) {
+                    public void onResponse(Response<WeatherResp> response, Retrofit retrofit) {
                        System.out.println(response.body().toString());
-
+                        Log.i("response",response.body().toString());
+                        Log.i("response",response.body().toString());
                     }
 
                     @Override
@@ -65,7 +67,8 @@ public class NewsModel {
 
 
             }
-        }).subscribe(new Subscriber<Integer>() {
+        }).subscribeOn(Schedulers.newThread())
+          .subscribe(new Subscriber<Integer>() {
 
 
 
