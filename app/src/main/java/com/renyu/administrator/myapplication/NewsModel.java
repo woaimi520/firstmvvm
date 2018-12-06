@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit.Call;
@@ -26,15 +27,14 @@ public class NewsModel {
     ArrayList<String> datalist = new ArrayList<String>();
     String dataUril="";
     final static String TAG = "NewsModel";
-    final static String BASE_URL = "http://v.juhe.cn/weather/";
-    private static Gson gson = new Gson();
+    //http://t.weather.sojson.com/api/weather/city/101030100
+    final static String BASE_URL = "http://t.weather.sojson.com";
+    private static String city = "101030100";
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(GsonConverterFactory.create())
             .build();
     MovieService mApi = retrofit.create(MovieService.class);
-
-    private static final String KEY = "------------------------";
 
     public NewsModel(NewslistBean bean,Reasult result) {
         this.bean = bean;
@@ -50,18 +50,35 @@ public class NewsModel {
             public void call(Subscriber<? super Integer> subscriber) {
                 subscriber.onNext(9);//这里可以添加网络访问
                 //调用方法得到一个Call
-                Call<WeatherResp> call = mApi.cityNameQueryWeather(KEY, "武汉",1);
+                Call<WeatherResp> call = mApi.cityNameQueryWeather();
                 call.enqueue(new Callback<WeatherResp>() {
                     @Override
                     public void onResponse(Response<WeatherResp> response, Retrofit retrofit) {
-                       System.out.println(response.body().toString());
-                        Log.i("response",response.body().toString());
-                        Log.i("response",response.body().toString());
+
+                        if(response.isSuccess()){
+
+                            try {
+
+                                //这里用bean来接收进过GSON 转化后的数据
+                                WeatherResp bean = response.body();
+                                String wendu =bean.getData().getWendu();
+                                Log.i("wendu", wendu);
+                            } catch (Exception e) {
+
+                            }
+
+
+
+
+                        }
+                     else {
+                            Log.i("response", "response fail");
+                        }
                     }
 
                     @Override
                     public void onFailure(Throwable throwable) {
-                        System.out.println("fail");
+                        Log.i("response", "response onFailure");
                     }
                 });
 

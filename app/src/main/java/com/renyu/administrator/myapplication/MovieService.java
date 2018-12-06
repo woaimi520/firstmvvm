@@ -11,9 +11,8 @@ import retrofit.http.Query;
 public interface MovieService {
 
 
-        @GET("index")
+        @GET("api/weather/city/101030100")
         //index会拼接到BASE_URL中，此时这个URL已经拼接完毕
-        Call<WeatherResp> cityNameQueryWeather(@Query("key") String key,
-                                               @Query("cityname") String cityname,
-                                               @Query("format") int format);
+        //http://t.weather.sojson.com/api/weather/city/101030100
+        Call<WeatherResp> cityNameQueryWeather();
 }
