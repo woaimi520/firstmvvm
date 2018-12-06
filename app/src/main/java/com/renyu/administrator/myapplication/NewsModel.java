@@ -30,6 +30,7 @@ public class NewsModel {
     //http://t.weather.sojson.com/api/weather/city/101030100
     final static String BASE_URL = "http://t.weather.sojson.com";
     private static String city = "101030100";
+    WeatherResp beanResp;
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -48,7 +49,7 @@ public class NewsModel {
 
             @Override
             public void call(Subscriber<? super Integer> subscriber) {
-                subscriber.onNext(9);//这里可以添加网络访问
+
                 //调用方法得到一个Call
                 Call<WeatherResp> call = mApi.cityNameQueryWeather();
                 call.enqueue(new Callback<WeatherResp>() {
@@ -60,8 +61,8 @@ public class NewsModel {
                             try {
 
                                 //这里用bean来接收进过GSON 转化后的数据
-                                WeatherResp bean = response.body();
-                                String wendu =bean.getData().getWendu();
+                                 beanResp = response.body();
+                                String wendu =beanResp.getData().getWendu();
                                 Log.i("wendu", wendu);
                             } catch (Exception e) {
 
@@ -81,7 +82,7 @@ public class NewsModel {
                         Log.i("response", "response onFailure");
                     }
                 });
-
+                subscriber.onNext(9);//这里可以添加网络访问
 
             }
         }).subscribeOn(Schedulers.newThread())
@@ -104,8 +105,16 @@ public class NewsModel {
                 Log.d(TAG, "对Next事件"+ integer +"作出响应"  );
                 double data = integer;
                 if(data>5) {
-                    datalist.add(String.valueOf(data));
-                    datalist.add(dataUril);
+                    if(beanResp!=null){
+
+                        String cityInfo = "CITY:" + beanResp.getCityInfo().getCity() + "\n"+"time:" + beanResp.getCityInfo().getUpdateTime();
+                        String wetherInfo = "温度:" + beanResp.getData().getWendu() + "\n" +
+                                "湿度:" + beanResp.getData().getShidu() + "\n" +
+                                "PM2.5:" + beanResp.getData().getPm25();
+                        String wether = cityInfo +"\n"+ wetherInfo;
+                        datalist.add(wether);
+
+                    }
                     //  bean.setCtime(String.valueOf(data));
                     result.onSuccess(datalist);
                 }else{
