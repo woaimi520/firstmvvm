@@ -1,10 +1,11 @@
-package com.renyu.administrator.myapplication;
+package com.renyu.administrator.myapplication.activity;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 
+import com.renyu.administrator.myapplication.viewmodel.NewsViewModel;
+import com.renyu.administrator.myapplication.R;
 import com.renyu.administrator.myapplication.databinding.ActivityMainBinding;
 
 import yu.com.Aad;

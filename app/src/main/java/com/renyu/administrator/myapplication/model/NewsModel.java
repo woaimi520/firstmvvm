@@ -1,10 +1,13 @@
-package com.renyu.administrator.myapplication;
+package com.renyu.administrator.myapplication.model;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
+import com.renyu.administrator.myapplication.data.CityIdConstance;
+import com.renyu.administrator.myapplication.util.GetProvider;
+import com.renyu.administrator.myapplication.util.MovieService;
+import com.renyu.administrator.myapplication.util.NewslistBean;
+import com.renyu.administrator.myapplication.util.WeatherResp;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit.Call;
@@ -128,7 +131,7 @@ public class NewsModel {
 
     }
 
-    interface Reasult{
+   public interface Reasult{
 
         void onSuccess(ArrayList<String> list);
 

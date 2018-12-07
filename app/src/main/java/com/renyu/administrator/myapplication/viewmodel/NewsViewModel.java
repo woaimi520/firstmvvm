@@ -1,11 +1,12 @@
-package com.renyu.administrator.myapplication;
+package com.renyu.administrator.myapplication.viewmodel;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.renyu.administrator.myapplication.util.NewslistBean;
 import com.renyu.administrator.myapplication.databinding.ActivityMainBinding;
+import com.renyu.administrator.myapplication.model.NewsModel;
 
 import java.util.ArrayList;
 

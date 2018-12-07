@@ -1,9 +1,10 @@
-package com.renyu.administrator.myapplication;
+package com.renyu.administrator.myapplication.util;
+
+import com.renyu.administrator.myapplication.util.WeatherResp;
 
 import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Path;
-import retrofit.http.Query;
 
 /**
  * Created by Administrator on 2018/11/24.

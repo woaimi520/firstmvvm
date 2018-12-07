@@ -1,4 +1,4 @@
-package com.renyu.administrator.myapplication;
+package com.renyu.administrator.myapplication.util;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.renyu.administrator.myapplication.BR;
 
 /**
  * Created by Administrator on 2018/11/7.

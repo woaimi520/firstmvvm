@@ -1,4 +1,4 @@
-package com.renyu.administrator.myapplication;
+package com.renyu.administrator.myapplication.util;
 
 
 import android.content.Context;
@@ -8,6 +8,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.renyu.administrator.myapplication.MyApplication;
 
 public class GetProvider implements AMapLocationListener {
     public AMapLocationClient mMapLocationClient;

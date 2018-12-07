@@ -8,7 +8,7 @@
 
         <variable
             name="news"
-            type="com.renyu.administrator.myapplication.NewslistBean" />
+            type="com.renyu.administrator.myapplication.util.NewslistBean" />
     </data>
 
     <LinearLayout xmlns:binding="http://schemas.android.com/apk/res-auto"
