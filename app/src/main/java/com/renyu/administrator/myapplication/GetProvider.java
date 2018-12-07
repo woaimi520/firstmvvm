@@ -1,114 +1,83 @@
 package com.renyu.administrator.myapplication;
 
-import android.Manifest;
+
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.icu.text.TimeZoneFormat;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.net.ContentHandler;
-import java.util.List;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 
-import retrofit.http.GET;
-
-/**
- * Created by Administrator on 2018/12/6.
- */
-
-public class GetProvider {
-
-
-    LocationManager locationManager;
-    double latitude;
-    double longitude;
-    Location location;
+public class GetProvider implements AMapLocationListener {
+    public AMapLocationClient mMapLocationClient;
+    public AMapLocationClientOption mMapLocationClientOption;
+    Context context = MyApplication.getAppContext();
 
     public GetProvider() {
-        try {
-            this.locationManager = (LocationManager) MyApplication.getAppContext().getSystemService(Context.LOCATION_SERVICE);
-        }catch (Exception e)
-        {
-            Log.i("exception", "erroe");
-        }
+        mMapLocationClient = new AMapLocationClient(context);
+        //初始化定位参数
+        mMapLocationClientOption = new AMapLocationClientOption();
+
     }
 
 
     public String getLocalCity() {
-        String provider;
-        List<String> list = locationManager.getProviders(true);
+        //高精度模式
+        mMapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置单次获取
+        mMapLocationClientOption.setOnceLocationLatest(true);
+        //设置返回三次中精度最高的一次
+        mMapLocationClientOption.setOnceLocationLatest(true);
+        //设置定位超时时间 30S
+        mMapLocationClientOption.setHttpTimeOut(30000);
 
-        if (list.contains(LocationManager.GPS_PROVIDER)) {
-            provider = getGpsProvide();
-        } else if (list.contains(LocationManager.NETWORK_PROVIDER)) {
-            provider = getNetProvide();
-        } else {
-           // Toast.makeText(MyApplication.getAppContext(), "请检查网络或GPS是否打开",
-           //         Toast.LENGTH_LONG).show();
-            return "chongqing";
-        }
-        if (ActivityCompat.checkSelfPermission(MyApplication.getAppContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MyApplication.getAppContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return "chongqing";
-        }
-         location = locationManager.getLastKnownLocation(provider);
-        if (location != null) {
+        //设置定位回调监听
+        mMapLocationClient.setLocationListener(this);
 
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
+        //启动定位
+        mMapLocationClient.setLocationOption(mMapLocationClientOption);
+        mMapLocationClient.startLocation();
+
+        return "wait";
 
 
-            return "经度:" + latitude + " 纬度:" + longitude;
+    }
 
-        }else {
-            while(location  == null)
-            {
-                locationManager.requestLocationUpdates("gps", 1000, 1, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(Location locationf) {
-                     
-                            latitude = locationf.getLatitude();
-                            longitude = locationf.getLongitude();
-
-                    }
-
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        //接收返回的定位结果
+        if (aMapLocation != null) {
+            if (aMapLocation.getErrorCode() == 0) {
+             //可在其中解析amapLocation获取相应内容。
 
 
-                    }
+                aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                aMapLocation.getLatitude();//获取纬度
+                aMapLocation.getLongitude();//获取经度
+                aMapLocation.getAccuracy();//获取精度信息
+                aMapLocation.getAddress();//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+                aMapLocation.getCountry();//国家信息
+                aMapLocation.getProvince();//省信息
+                aMapLocation.getCity();//城市信息
+                aMapLocation.getDistrict();//城区信息
+                aMapLocation.getStreet();//街道信息
+                aMapLocation.getStreetNum();//街道门牌号信息
+                aMapLocation.getCityCode();//城市编码
+                aMapLocation.getAdCode();//地区编码
+                aMapLocation.getAoiName();//获取当前定位点的AOI信息
+                aMapLocation.getBuildingId();//获取当前室内定位的建筑物Id
+                aMapLocation.getFloor();//获取当前室内定位的楼层
+                aMapLocation.getGpsAccuracyStatus();//获取GPS的当前状态编码
 
-                    @Override
-                    public void onProviderEnabled(String provider) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String provider) {
-
-                    }
-                });
+                mMapLocationClient.stopLocation();
+            }else {
+                //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError","location Error, ErrCode:"
+                        + aMapLocation.getErrorCode() + ", errInfo:"
+                        + aMapLocation.getErrorInfo());
             }
         }
-        return "经度:" + latitude + " 纬度:" + longitude;  }
 
-    private String getGpsProvide() {
-        return  LocationManager.GPS_PROVIDER;
     }
-
-    private String getNetProvide() {
-        return LocationManager.NETWORK_PROVIDER;
-    }
-
 }
