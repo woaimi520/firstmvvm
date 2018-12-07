@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.renyu.administrator.myapplication.data.CityIdConstance;
 import com.renyu.administrator.myapplication.util.GetProvider;
-import com.renyu.administrator.myapplication.util.MovieService;
+import com.renyu.administrator.myapplication.util.WeatherServiceInterface;
 import com.renyu.administrator.myapplication.util.NewslistBean;
 import com.renyu.administrator.myapplication.util.WeatherResp;
 
@@ -24,12 +24,12 @@ import rx.schedulers.Schedulers;
  * Created by Administrator on 2018/11/7.
  */
 
-public class NewsModel {
+public class MainModel {
     NewslistBean bean;
     Reasult result;
     ArrayList<String> datalist = new ArrayList<String>();
     String dataUril="";
-    final static String TAG = "NewsModel";
+    final static String TAG = "MainModel";
     //http://t.weather.sojson.com/api/weather/city/101030100
     final static String BASE_URL = "http://t.weather.sojson.com";
     private static String city = "101030100";
@@ -38,9 +38,9 @@ public class NewsModel {
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-    MovieService mApi = retrofit.create(MovieService.class);
+    WeatherServiceInterface mApi = retrofit.create(WeatherServiceInterface.class);
 
-    public NewsModel(NewslistBean bean,Reasult result) {
+    public MainModel(NewslistBean bean, Reasult result) {
         this.bean = bean;
         this.result = result;
     }

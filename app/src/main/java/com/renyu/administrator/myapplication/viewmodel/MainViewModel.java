@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.renyu.administrator.myapplication.model.MainModel;
 import com.renyu.administrator.myapplication.util.NewslistBean;
 import com.renyu.administrator.myapplication.databinding.ActivityMainBinding;
-import com.renyu.administrator.myapplication.model.NewsModel;
 
 import java.util.ArrayList;
 
@@ -14,24 +14,24 @@ import java.util.ArrayList;
  * Created by Administrator on 2018/11/7.
  */
 
-public class NewsViewModel implements NewsModel.Reasult {
+public class MainViewModel implements MainModel.Reasult {
 
 
     public Activity activity;
     public ActivityMainBinding activityMainBinding;
     public NewslistBean newslistBean;
-    public NewsModel model;
+    public MainModel model;
 
     private int num = 1;
     String outter = "get data";
 
 
-    public NewsViewModel(Activity activity, final ActivityMainBinding activityMainBinding) {
+    public MainViewModel(Activity activity, final ActivityMainBinding activityMainBinding) {
         this.activity = activity;
         this.activityMainBinding = activityMainBinding;
 
         newslistBean = new NewslistBean("renyu", "titler", "des");
-        model = new NewsModel(newslistBean,this);
+        model = new MainModel(newslistBean,this);
         activityMainBinding.setNews(newslistBean);//设置初始值
         newslistBean.setCtime("hahah");
         //Button Btn = (Button) activity.findViewById(R.id.button0);

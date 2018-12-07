@@ -10,7 +10,7 @@ import retrofit.http.Path;
  * Created by Administrator on 2018/11/24.
  */
 
-public interface MovieService {
+public interface WeatherServiceInterface {
 
 
         @GET("api/weather/city/{city}")
