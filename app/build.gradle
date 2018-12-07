@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'mvvmkey'
+            keyPassword 'qqq007'
+            storeFile file('E:/keystory/mvvmkey.jks')
+            storePassword 'qqq007'
+        }
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.renyu.administrator.myapplication"
@@ -15,20 +23,21 @@ android {
     }
     defaultConfig {
 
-       javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
-     }
-
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
-
-    dataBinding{
-        enabled=true
+    dataBinding {
+        enabled = true
     }
-
 }
 
 dependencies {
@@ -47,4 +56,5 @@ dependencies {
     implementation files('lib/converter-gson-2.0.0-beta2_.jar')
     implementation files('lib/butterknife-7.0.1.jar')
     implementation files('lib/RxAndroid.jar')
+    implementation files('lib/AMap_Location_V4.4.0_20181122.jar')
 }

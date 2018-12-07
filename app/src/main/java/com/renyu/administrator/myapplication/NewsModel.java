@@ -51,7 +51,8 @@ public class NewsModel {
             public void call(Subscriber<? super Integer> subscriber) {
 
                 //调用方法得到一个Call
-                Call<WeatherResp> call = mApi.cityNameQueryWeather();
+                Call<WeatherResp> call = mApi.cityNameQueryWeather(CityIdConstance.CHONGQIONG);
+
                 call.enqueue(new Callback<WeatherResp>() {
                     @Override
                     public void onResponse(Response<WeatherResp> response, Retrofit retrofit) {
@@ -67,9 +68,6 @@ public class NewsModel {
                             } catch (Exception e) {
 
                             }
-
-
-
 
                         }
                      else {
@@ -103,7 +101,7 @@ public class NewsModel {
             @Override
             public void onNext(Integer integer) {
                 Log.d(TAG, "对Next事件"+ integer +"作出响应"  );
-                double data = integer;
+                Integer data = integer;
                 if(data>5) {
                     if(beanResp!=null){
 
@@ -111,8 +109,9 @@ public class NewsModel {
                         String wetherInfo = "温度:" + beanResp.getData().getWendu() + "\n" +
                                 "湿度:" + beanResp.getData().getShidu() + "\n" +
                                 "PM2.5:" + beanResp.getData().getPm25();
-                        String wether = cityInfo +"\n"+ wetherInfo;
-                        datalist.add(wether);
+                        String jingweidu = new GetProvider().getLocalCity();
+                        String wether = cityInfo +"\n"+ wetherInfo+"\n" +jingweidu;
+                                datalist.add(wether);
 
                     }
                     //  bean.setCtime(String.valueOf(data));
