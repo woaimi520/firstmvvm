@@ -54,6 +54,7 @@
         </meta-data>
 
         <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name=".service.DataBaseService" ></service>
 
 
         <activity android:name=".activity.WelcomeActivity"
