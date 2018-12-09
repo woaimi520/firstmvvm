@@ -65,9 +65,11 @@ public class WelcomeActivity extends Activity{
             mDataBaseServiceBinder = (DataBaseService.DataBaseServiceBinder) service;
 
 
-       //获取定位信息
-
+           //获取定位信息
             mDataBaseServiceBinder.addToBp();
+            // 打开main activity
+            Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
+            startActivity(intent);
         }
 
         @Override
