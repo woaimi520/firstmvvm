@@ -112,8 +112,8 @@ public class MainModel {
                         String wetherInfo = "温度:" + beanResp.getData().getWendu() + "\n" +
                                 "湿度:" + beanResp.getData().getShidu() + "\n" +
                                 "PM2.5:" + beanResp.getData().getPm25();
-                        String jingweidu = new GetProvider().getLocalCity();
-                        String wether = cityInfo +"\n"+ wetherInfo+"\n" +jingweidu;
+                        //String jingweidu = new GetProvider().getLocalCity();
+                        String wether = cityInfo +"\n"+ wetherInfo+"\n" ;
                                 datalist.add(wether);
 
                     }

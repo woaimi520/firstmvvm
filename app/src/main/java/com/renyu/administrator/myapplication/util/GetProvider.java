@@ -10,11 +10,14 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.renyu.administrator.myapplication.MyApplication;
 
+import java.util.ArrayList;
+
 public class GetProvider implements AMapLocationListener {
     public AMapLocationClient mMapLocationClient;
     public AMapLocationClientOption mMapLocationClientOption;
     Context context = MyApplication.getAppContext();
-
+    ArrayList<IResultWetherListener> listenersList = new ArrayList<IResultWetherListener>();
+    private final static String TAG = "GetProvider";
     public GetProvider() {
         mMapLocationClient = new AMapLocationClient(context);
         //初始化定位参数
@@ -23,7 +26,13 @@ public class GetProvider implements AMapLocationListener {
     }
 
 
-    public String getLocalCity() {
+    public void  getLocalCity(IResultWetherListener listener) {
+        //j加入到list中
+        if(!listenersList.contains(listener)) {
+            listenersList.add(listener);
+        }else{
+            Log.i(TAG, "aready contain");
+        }
         //高精度模式
         mMapLocationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
         //设置单次获取
@@ -40,7 +49,6 @@ public class GetProvider implements AMapLocationListener {
         mMapLocationClient.setLocationOption(mMapLocationClientOption);
         mMapLocationClient.startLocation();
 
-        return "wait";
 
 
     }
@@ -50,7 +58,7 @@ public class GetProvider implements AMapLocationListener {
         //接收返回的定位结果
         if (aMapLocation != null) {
             if (aMapLocation.getErrorCode() == 0) {
-             //可在其中解析amapLocation获取相应内容。
+                //可在其中解析amapLocation获取相应内容。
 
 
                 aMapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
@@ -70,15 +78,25 @@ public class GetProvider implements AMapLocationListener {
                 aMapLocation.getBuildingId();//获取当前室内定位的建筑物Id
                 aMapLocation.getFloor();//获取当前室内定位的楼层
                 aMapLocation.getGpsAccuracyStatus();//获取GPS的当前状态编码
-
                 mMapLocationClient.stopLocation();
-            }else {
+                //分发数据
+                for (IResultWetherListener listener : listenersList) {
+                    listener.dealData(aMapLocation);
+                }
+            } else {
                 //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                Log.e("AmapError","location Error, ErrCode:"
+                Log.e("AmapError", "location Error, ErrCode:"
                         + aMapLocation.getErrorCode() + ", errInfo:"
                         + aMapLocation.getErrorInfo());
             }
         }
+
+    }
+
+
+    public interface IResultWetherListener {
+        public boolean dealData(AMapLocation aMapLocation);
+
 
     }
 }
