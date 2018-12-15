@@ -57,4 +57,5 @@ dependencies {
     implementation files('lib/butterknife-7.0.1.jar')
     implementation files('lib/RxAndroid.jar')
     implementation files('lib/AMap_Location_V4.4.0_20181122.jar')
+    implementation files('lib/litepal-2.0.0-src.jar')
 }
