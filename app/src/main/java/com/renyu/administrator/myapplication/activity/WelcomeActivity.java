@@ -85,9 +85,7 @@ public class WelcomeActivity extends Activity{
             mDataBaseServiceBinder.addToBp();
 
 
-            // 打开main activity
-            Intent intent = new Intent(WelcomeActivity.this,MainActivity.class);
-            startActivity(intent);
+
         }
 
         @Override

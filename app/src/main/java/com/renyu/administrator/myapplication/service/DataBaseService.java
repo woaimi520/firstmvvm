@@ -11,11 +11,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.amap.api.location.AMapLocation;
+import com.renyu.administrator.myapplication.activity.MainActivity;
+import com.renyu.administrator.myapplication.activity.WelcomeActivity;
 import com.renyu.administrator.myapplication.data.WeatherDB;
 import com.renyu.administrator.myapplication.util.CityCodeManager;
 import com.renyu.administrator.myapplication.util.GetProvider;
 
 import org.litepal.LitePal;
+import org.litepal.crud.LitePalSupport;
 
 import java.util.Queue;
 
@@ -69,16 +72,21 @@ public class DataBaseService extends Service {
 
                                CityCodeManager cityCodeManager = new CityCodeManager();
                                String cityCode =cityCodeManager.cityCodeMap.get(aMapLocation.getCity());
-                               System.out.printf("1", cityCode);
-                               System.out.printf("1", cityCode);
+
 
                                //写入数据库
+                               LitePal.deleteAll(WeatherDB.class);
                                WeatherDB weatherDB = new WeatherDB();
                                weatherDB.setCity(cityCode);
                                weatherDB.save();
+                               String id = String.valueOf(weatherDB.getId()) ;
 
-                             String city =LitePal.find(WeatherDB.class, 1).getCity();
+                               System.out.printf("1", id);
 
+
+                             String city =LitePal.find(WeatherDB.class, 0).getCity();
+
+                               System.out.printf("1", city);
                                System.out.printf("1", city);
 
                                return true;
@@ -87,7 +95,7 @@ public class DataBaseService extends Service {
                        }
                    });
 
-
+                    subscriber.onNext(9);//这里可以添加网络访问
 
                 }
             }).subscribeOn(Schedulers.newThread())
@@ -107,7 +115,9 @@ public class DataBaseService extends Service {
 
                       //接收通知 弹出toast
 
-
+                      // 打开main activity
+                      Intent intent = new Intent(DataBaseService.this,MainActivity.class);
+                      startActivity(intent);
                   }
               });
 
