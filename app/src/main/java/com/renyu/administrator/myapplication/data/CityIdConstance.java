@@ -10,5 +10,4 @@ public static  final String BEIJING ="101010100";
     public static  final String CHONGQIONG ="101040100";
     public static  final String TIANJING ="101030100";
 
-
 }

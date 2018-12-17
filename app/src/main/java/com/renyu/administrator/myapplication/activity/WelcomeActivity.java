@@ -5,13 +5,17 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.renyu.administrator.myapplication.R;
+import com.renyu.administrator.myapplication.data.WeatherDB;
 import com.renyu.administrator.myapplication.service.DataBaseService;
+
+import org.litepal.tablemanager.Connector;
 
 import java.util.ServiceConfigurationError;
 
@@ -24,11 +28,24 @@ public class WelcomeActivity extends Activity{
     Myconn myconn;
     DataBaseService.DataBaseServiceBinder mDataBaseServiceBinder;
 
+    private String [] cityCode ={""};
+    private String[] cityName = {""};
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
             setContentView(R.layout.activity_welcome);
+
+         //创建weather数据库
+        SQLiteDatabase db = Connector.getDatabase();
+        // 创建表保存citycode 和城市名
+
+        //如果表中有内容就不需要添加了
+
+
+
+
 
     }
 

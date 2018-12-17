@@ -11,7 +11,11 @@ import android.util.Log;
 import android.view.View;
 
 import com.amap.api.location.AMapLocation;
+import com.renyu.administrator.myapplication.data.WeatherDB;
+import com.renyu.administrator.myapplication.util.CityCodeManager;
 import com.renyu.administrator.myapplication.util.GetProvider;
+
+import org.litepal.LitePal;
 
 import java.util.Queue;
 
@@ -63,10 +67,19 @@ public class DataBaseService extends Service {
                        public boolean dealData(AMapLocation aMapLocation) {
                            if (aMapLocation != null) {
 
+                               CityCodeManager cityCodeManager = new CityCodeManager();
+                               String cityCode =cityCodeManager.cityCodeMap.get(aMapLocation.getCity());
+                               System.out.printf("1", cityCode);
+                               System.out.printf("1", cityCode);
+
                                //写入数据库
+                               WeatherDB weatherDB = new WeatherDB();
+                               weatherDB.setCity(cityCode);
+                               weatherDB.save();
 
+                             String city =LitePal.find(WeatherDB.class, 1).getCity();
 
-                               //发送通知
+                               System.out.printf("1", city);
 
                                return true;
                            }
