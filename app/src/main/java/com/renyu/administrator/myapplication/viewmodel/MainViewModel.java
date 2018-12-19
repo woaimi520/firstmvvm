@@ -40,7 +40,7 @@ public class MainViewModel implements MainModel.Reasult {
         cityCode = sp.getString("cityCode", CityIdConstance.BEIJING);
 
         //end
-        model = new MainModel(newslistBean,this);
+        model = new MainModel(newslistBean,this,cityCode);
         activityMainBinding.setNews(newslistBean);//设置初始值
         newslistBean.setCtime("hahah");
         //Button Btn = (Button) activity.findViewById(R.id.button0);

@@ -27,6 +27,7 @@ import rx.schedulers.Schedulers;
 public class MainModel {
     NewslistBean bean;
     Reasult result;
+    String cityCode;
     ArrayList<String> datalist = new ArrayList<String>();
     String dataUril="";
     final static String TAG = "MainModel";
@@ -40,9 +41,10 @@ public class MainModel {
             .build();
     WeatherServiceInterface mApi = retrofit.create(WeatherServiceInterface.class);
 
-    public MainModel(NewslistBean bean, Reasult result) {
+    public MainModel(NewslistBean bean, Reasult result,String cityCode) {
         this.bean = bean;
         this.result = result;
+        this.cityCode = cityCode;
     }
 
     public void getData(){
@@ -54,7 +56,7 @@ public class MainModel {
             public void call(Subscriber<? super Integer> subscriber) {
 
                 //调用方法得到一个Call
-                Call<WeatherResp> call = mApi.cityNameQueryWeather(CityIdConstance.CHONGQIONG);
+                Call<WeatherResp> call = mApi.cityNameQueryWeather(cityCode);
 
                 call.enqueue(new Callback<WeatherResp>() {
                     @Override
