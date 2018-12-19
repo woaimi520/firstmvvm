@@ -117,6 +117,7 @@ public class DataBaseService extends Service {
 
                       // 打开main activity
                       Intent intent = new Intent(DataBaseService.this,MainActivity.class);
+                      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//不许加 不然跳转不了
                       startActivity(intent);
                   }
               });
