@@ -2,6 +2,7 @@ package com.renyu.administrator.myapplication.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.databinding.ObservableBoolean;
 import android.os.Binder;
@@ -75,19 +76,14 @@ public class DataBaseService extends Service {
 
 
                                //写入数据库
-                               LitePal.deleteAll(WeatherDB.class);
-                               WeatherDB weatherDB = new WeatherDB();
-                               weatherDB.setCity(cityCode);
-                               weatherDB.save();
-                               String id = String.valueOf(weatherDB.getId()) ;
 
-                               System.out.printf("1", id);
+                               SharedPreferences sp = getSharedPreferences("citycode", 0);
+                               SharedPreferences.Editor editor = sp.edit();
+                               editor.putString("cityCode", cityCode);
+                               editor.commit();
 
 
-
-
-
-                               subscriber.onNext(9);//这里可以添加网络访问
+                                       subscriber.onNext(9);//这里可以添加网络访问
                                return true;
                            }
                            return false;
