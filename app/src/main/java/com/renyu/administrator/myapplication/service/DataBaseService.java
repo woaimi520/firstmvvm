@@ -61,7 +61,7 @@ public class DataBaseService extends Service {
             Observable.create(new Observable.OnSubscribe<Integer>() {
 
                 @Override
-                public void call(Subscriber<? super Integer> subscriber) {
+                public void call(final Subscriber<? super Integer> subscriber) {
 
              //具体的访问数据库操作
                     GetProvider getLocalCity = new GetProvider();
@@ -84,18 +84,17 @@ public class DataBaseService extends Service {
                                System.out.printf("1", id);
 
 
-                             String city =LitePal.find(WeatherDB.class, 0).getCity();
 
-                               System.out.printf("1", city);
-                               System.out.printf("1", city);
 
+
+                               subscriber.onNext(9);//这里可以添加网络访问
                                return true;
                            }
                            return false;
                        }
                    });
 
-                    subscriber.onNext(9);//这里可以添加网络访问
+
 
                 }
             }).subscribeOn(Schedulers.newThread())
