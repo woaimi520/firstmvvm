@@ -7,6 +7,7 @@ import com.renyu.administrator.myapplication.util.GetProvider;
 import com.renyu.administrator.myapplication.util.WeatherServiceInterface;
 import com.renyu.administrator.myapplication.util.NewslistBean;
 import com.renyu.administrator.myapplication.util.WeatherResp;
+import com.squareup.okhttp.OkHttpClient;
 
 import java.util.ArrayList;
 
@@ -15,8 +16,10 @@ import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
@@ -38,7 +41,10 @@ public class MainModel {
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .build();
+
+
     WeatherServiceInterface mApi = retrofit.create(WeatherServiceInterface.class);
 
     public MainModel(NewslistBean bean, Reasult result,String cityCode) {
@@ -49,49 +55,13 @@ public class MainModel {
 
     public void getData(){
 
-        Observable.create(new Observable.OnSubscribe<Integer>() {
 
 
-            @Override
-            public void call(Subscriber<? super Integer> subscriber) {
 
-                //调用方法得到一个Call
-                Call<WeatherResp> call = mApi.cityNameQueryWeather(cityCode);
-
-                call.enqueue(new Callback<WeatherResp>() {
-                    @Override
-                    public void onResponse(Response<WeatherResp> response, Retrofit retrofit) {
-
-                        if(response.isSuccess()){
-
-                            try {
-
-                                //这里用bean来接收进过GSON 转化后的数据
-                                 beanResp = response.body();
-                                String wendu =beanResp.getData().getWendu();
-                                Log.i("wendu", wendu);
-                            } catch (Exception e) {
-
-                            }
-
-                        }
-                     else {
-                            Log.i("response", "response fail");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.i("response", "response onFailure");
-                    }
-                });
-                subscriber.onNext(9);//这里可以添加网络访问
-
-            }
-        }).subscribeOn(Schedulers.newThread())
-          .subscribe(new Subscriber<Integer>() {
-
-
+        mApi.cityNameQueryWeather(cityCode)
+          .subscribeOn(AndroidSchedulers.mainThread())
+          .subscribe(
+           new Subscriber<WeatherResp>() {
 
             @Override
             public void onCompleted() {
@@ -104,12 +74,9 @@ public class MainModel {
             }
 
             @Override
-            public void onNext(Integer integer) {
-                Log.d(TAG, "对Next事件"+ integer +"作出响应"  );
-                Integer data = integer;
-                if(data>5) {
-                    if(beanResp!=null){
+            public void onNext(WeatherResp weatherResp) {
 
+                beanResp = weatherResp;
                         String cityInfo = "CITY:" + beanResp.getCityInfo().getCity() + "\n"+"time:" + beanResp.getCityInfo().getUpdateTime();
                         String wetherInfo = "温度:" + beanResp.getData().getWendu() + "\n" +
                                 "湿度:" + beanResp.getData().getShidu() + "\n" +
@@ -118,13 +85,10 @@ public class MainModel {
                         String wether = cityInfo +"\n"+ wetherInfo+"\n" ;
                                 datalist.add(wether);
 
-                    }
+
                     //  bean.setCtime(String.valueOf(data));
                     result.onSuccess(datalist);
-                }else{
-                    //  bean.setCtime("fail");
-                    result.onFail();
-                }
+
             }
         });
 
