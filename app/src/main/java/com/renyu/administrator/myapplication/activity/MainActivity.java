@@ -21,5 +21,6 @@ public class MainActivity extends AppCompatActivity {
         newsViewModel = new MainViewModel(this, binding);
         Aad aad = new Aad();
         //1
+        //2
     }
 }
